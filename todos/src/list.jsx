@@ -1,13 +1,14 @@
 var React = require('react');
+var ListItem = require('./list-item');
 
 module.exports = React.createClass({
   render: function() {
-    return <ul>
+    return <div>
       {this.renderList()}
-    </ul>
+    </div>
   },
   renderList: function() {
-    if (this.props.items && Object.keys(this.props.items).length === 0) {
+    if (!this.props.items) {
       return <h4>
         Add a todo to get started.
       </h4>
@@ -15,10 +16,14 @@ module.exports = React.createClass({
     else {
       var children = [];
       for (var key in this.props.items) {
+        var item = this.props.items[key];
+        item.key = key;  // assign a key b/c jsx won't pass down to list-item
         children.push(
-          <li>
-            {this.props.items[key].text}
-          </li>
+          <ListItem
+            item={item}
+            key={key}
+            >
+          </ListItem>
         )
       }
       return children;
